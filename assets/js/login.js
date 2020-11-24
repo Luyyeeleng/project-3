@@ -43,6 +43,7 @@ $(function () {
         layui.layer.msg(res.message);
         // 注册出错
         if (res.status !== 0) return;
+
         $('#regForm')[0].reset();
         $('#link_reg').click();
 
@@ -53,4 +54,24 @@ $(function () {
 
   });
 
+
+  //监听登录表单的提交事件
+
+  $('#loginForm').on('submit', function (e) {
+    e.preventDefault()
+    $.ajax({
+      url: 'http://ajax.frontend.itheima.net/api/login',
+      method: 'POST',
+      data: $(this).serialize(),
+      success(res) {
+        layui.layer.msg(res.message);
+        if (res.status !== 0) return;
+        localStorage.setItem('token', res.token)
+        location.href = '/index.html'
+
+
+      }
+    })
+
+  })
 }) 

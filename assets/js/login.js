@@ -44,9 +44,15 @@ $(function () {
         // 注册出错
         if (res.status !== 0) return;
 
+        // 将用户名密码自动填充到登录表单中
+        let uname = $('.reg-box [name=username]').val().trim();
+        $('.login-box [name=username]').val(uname);
+        let upwd = $('.reg-box [name=password]').val().trim();
+        $('.login-box [name=password]').val(upwd);
+        // 清空注册表单
         $('#regForm')[0].reset();
+        //切换到登录div
         $('#link_reg').click();
-
       }
 
     })
@@ -55,23 +61,46 @@ $(function () {
   });
 
 
-  //监听登录表单的提交事件
 
-  $('#loginForm').on('submit', function (e) {
-    e.preventDefault()
+  // 4.注册表单提交事件
+  $('#formLogin').on('submit', function (e) {
+    // 阻止表单默认跳转行为
+    e.preventDefault();
+    // 获取登录表单数据
+    let dataStr = $(this).serialize();
+    // 异步提交到 登录接口
     $.ajax({
       url: 'http://ajax.frontend.itheima.net/api/login',
       method: 'POST',
-      data: $(this).serialize(),
+      data: dataStr,
       success(res) {
-        layui.layer.msg(res.message);
-        if (res.status !== 0) return;
-        localStorage.setItem('token', res.token)
-        location.href = '/index.html'
+        console.log(res);
+
+        // 登录失败
+        if (res.status !== 0) return layui.layer.msg(res.message);
+        // 登录成功
+        layui.layer.msg(res.message, {
+          icon: 6,
+          time: 1500 //2秒关闭（如果不配置，默认是3秒）
+        }, function () {
+          // a.保存token值到localstorage
+          localStorage.setItem('token', res.token);
+          // b. 跳转到 index.html
+          location.href = 'index.html';
+
+
+        });
 
 
       }
+
     })
 
-  })
+  });
+
+
+
+
+
+
 }) 

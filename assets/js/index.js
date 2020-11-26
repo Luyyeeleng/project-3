@@ -2,51 +2,10 @@
 
 $(function () {
 
-    $.ajax({
-        url: '/my/userinfo',
-        method: 'get',
-        headers: {
-            Authorization: localStorage.getItem('token')
+    getUserInfo();
 
-        },
-        success(res) {
-            console.log(res);
-
-            if (res.status != 0) return layui.layer.msg(res.message);
-            // 渲染洪湖信息头像
-            renderAvatar(res.data)
-        }
-    });
-    // 渲染用户信息函数...........................................................
-    function renderAvatar(usrData) {
-        // a. 先获取用户名（昵称/登录名）
-        let usrName = usrData.nickname || usrData.username;
-
-
-        // b.设置给welcomme span标签
-        $('#welcome').html(usrName);
-
-        // c.渲染头像
-        if (usrData.user_pic != null) {
-            // 有图片头像
-            $('.layui-nav-img').attr('src', usrData.user_pic).show();
-            // 隐藏文字头像
-            $('.text-avater').hide();
-        } else {
-            // 没有图片头像，使用文本头像
-            $('.layui-nav-img').hide();
-            // 获取名字首字母 大写
-            let firstChar = usrName[0].toUpperCase();
-            // 设置文字并显示
-            $('.text-avater').text(firstChar).show();
-
-
-        }
-
-    };
 
     // 退出按钮函数
-
     $('#btnLogout').on('click', function () {
         // 弹出确认框
         layui.layer.confirm('您确认退出系统吗？',
@@ -60,7 +19,57 @@ $(function () {
                 layer.close(index);
             });
 
-    })
-
-
+    });
 })
+
+
+
+
+// 获取用户的基本信息
+// console.log($.ajax);
+function getUserInfo() {
+    $.ajax({
+        url: '/my/userinfo',
+        method: 'get',
+        success(res) {
+            console.log(res);
+            if (res.status != 0) return layui.layer.msg(res.message);
+            // 渲染洪湖信息头像
+            renderAvatar(res.data)
+        }
+    });
+
+
+}
+
+
+// 渲染用户信息函数...........................................................
+function renderAvatar(usrData) {
+    // a. 先获取用户名（昵称/登录名）
+    let usrName = usrData.nickname || usrData.username;
+
+
+    // b.设置给welcomme span标签
+    $('#welcome').html(usrName);
+
+    // c.渲染头像
+    if (usrData.user_pic != null) {
+        // 有图片头像
+        $('.layui-nav-img').attr('src', usrData.user_pic).show();
+        // 隐藏文字头像
+        $('.text-avater').hide();
+    } else {
+        // 没有图片头像，使用文本头像
+        $('.layui-nav-img').hide();
+        // 获取名字首字母 大写
+        let firstChar = usrName[0].toUpperCase();
+        // 设置文字并显示
+        $('.text-avater').text(firstChar).show();
+    }
+};
+
+
+
+
+
+

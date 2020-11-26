@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>重置密码</title>
+    <!-- layui的css文件 -->
+    <link rel="stylesheet" href="/assets/lib/layui/css/layui.css">
+    <!-- 自己的css文件 -->
+    <link rel="stylesheet" href="/assets/css/user-info.css">
+
+</head>
+
+<body>
+    <div class="layui-card">
+        <div class="layui-card-header">修改用户密码</div>
+        <div class="layui-card-body">
+
+            <form class="layui-form" action="" lay-filter="userForm">
+                <!-- id隐藏域，在ajax加载用户信息后，通过js-->
+                <input type="hidden" name="id" value=" ">
+                <!-- 原密码 -->
+                <div class="layui-form-item">
+                    <label class="layui-form-label">原密码</label>
+                    <div class="layui-input-block">
+                        <input type="password" name="oldPwd" required lay-verify="pwd" placeholder="请输入旧密码"
+                            autocomplete="off" class="layui-input">
+                    </div>
+                </div>
+
+                <!-- 新密码 -->
+                <div class="layui-form-item">
+                    <label class="layui-form-label">新密码</label>
+                    <div class="layui-input-block">
+                        <input type="password" name="newPwd" required lay-verify="pwd|samepwd" placeholder="请输入新密码"
+                            autocomplete="off" class="layui-input">
+                    </div>
+                </div>
+
+                <!-- 确认密码 -->
+                <div class="layui-form-item">
+                    <label class="layui-form-label">确认密码</label>
+                    <div class="layui-input-block">
+                        <input type="password" name="reNewPwd" required lay-verify="pwd|confirmpwd" placeholder="请确认新密码"
+                            autocomplete="off" class="layui-input">
+                    </div>
+                </div>
+
+                <!-- 提交按钮 -->
+                <div class="layui-form-item">
+                    <div class="layui-input-block">
+                        <button class="layui-btn" lay-submit lay-filter="formDemo">立即提交</button>
+                        <button type="reset" id="c" class="layui-btn layui-btn-primary">重置</button>
+                    </div>
+                </div>
+        </div>
+    </div>
+
+
+    <!-- 导入layui的js -->
+    <script src="/assets/lib/layui/layui.all.js"></script>
+    <!-- 引入jquery -->
+    <script src="/assets/lib/jquery.js"></script>
+    <!-- 倒入自己封装的API-->
+    <script src="/assets/js/baseAPI.js"></script>
+    <!-- 引入自己的js -->
+    <script src="/assets/js/user-pwd.js"></script>
+</body>
+
+</html>

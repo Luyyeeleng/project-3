@@ -9,7 +9,7 @@ $.ajaxPrefilter(function (ajaxOpt) {
 
 
   // b.为所有 /my/请求添加 token
-  if (ajaxOpt.url.indexOf('/my/') > -1) {
+  if (ajaxOpt.url.indexOf('/my/') !== -1) {
     ajaxOpt.headers = {
       Authorization: localStorage.getItem('token')
 
@@ -19,17 +19,19 @@ $.ajaxPrefilter(function (ajaxOpt) {
 
   // c.为所有的ajax请求 统一配置complete 事件函数................
   ajaxOpt.complete = function (res) {
+    console.log(res);
+
     if (res.responseJSON.status == 1 && res.responseJSON.message == '身份认证失败！') {
       // c2.木有登录，则：
       // c2.1 显示需要重新登录的消息，显示结束后，再执行 清空token和跳转操作
       layer.msg(res.responseJSON.message, {
         icon: 1,
-        time: 1500 //2秒关闭（如果不配置，默认是3秒）
+        time: 100 //2秒关闭（如果不配置，默认是3秒）
       }, function () {
         // 清空token
         localStorage.removeItem('token');
         //跳转到login.html
-        location.href = '/login.html'
+        window.top.location.href = '/login.html'
 
       });
 
